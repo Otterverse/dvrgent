@@ -1,0 +1,14 @@
+[Unit]
+Description=DVRgent Daemon
+Wants=network.target
+
+[Service]
+User=media
+ExecStart=/opt/dvrgent/dvrgent.py
+KillMode=control-group
+Restart=always
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
+

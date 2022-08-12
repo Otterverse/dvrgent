@@ -1,0 +1,14 @@
+[Unit]
+Description=DVRgent UI
+Wants=network.target
+
+[Service]
+User=media
+Environment=FLASK_APP=/opt/dvrgent/run_ui.py
+ExecStart=/usr/bin/flask run --host=0.0.0.0
+KillMode=control-group
+Restart=always
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

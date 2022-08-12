@@ -1,0 +1,139 @@
+.box {
+	background-color: #cccccc;
+	padding: 0.5em;
+	margin: 0.2em;
+	border-radius: 0.1em;
+
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12);
+
+
+}
+
+.menu {
+	display: flex;
+	flex-direction: row;
+	width: 95%;
+}
+
+.lineup, .recording_list{
+	display: flex;
+	flex-direction: column;
+	width: 95%;
+
+}
+
+.dates {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.search {
+	text-align: center;
+}
+
+input {
+	padding: 0.25em;
+	border: none;
+	border-radius: 0.1em;
+	margin: 0.25em;
+}
+
+form {
+	margin: inherit;
+}
+
+.station {
+	display: none;
+}
+
+.schedule {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.station_info {
+	background-color: #cccccc;
+	font-weight: bold;
+}
+
+.program {
+	display: flex;
+	flex-direction: column;
+	background-color: #aaaaaa;
+	max-height: 20em;
+	max-width: 12em;
+	min-width: 12em;
+}
+
+.program .duration {
+  flex: 1 0 auto;
+}
+
+.time {
+	white-space: nowrap;
+}
+
+.program_title {
+	font-weight: bold;
+}
+
+.episode_title {
+	font-style: italic;
+}
+
+.duration {
+	font-style: italic;
+}
+
+.description {
+
+}
+
+.type_Movie {
+	background-color: cc8888;
+}
+
+.type_Episode {
+	background-color: 8888aa;
+}
+
+.first_run {
+	background-color: 8888ff;
+}
+
+.type_Sports {
+	background-color: 44444;
+}
+
+.date{
+	white-space: nowrap;
+	font-weight: bold;
+}
+
+.selected{
+	background-color: red;
+}
+
+.series{
+	background-color: 88aa88;
+}
+
+.single{
+	background-color: aa8888;
+}
+
+a:visited{
+	color: inherit;
+	text-decoration: none;
+}
+
+a:active, a:link, a:visited{
+	color: inherit;
+	text-decoration: none;
+}
+
+a:hover{
+	text-decoration: underline;
+}

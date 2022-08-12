@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="recording_list">
+
+	<div class="box">
+		<div class="box">
+			Upcoming Recordings
+		</div>
+		<div class="schedule">
+
+		{% set upcoming = [] %}
+		{% for recording in recordings %}
+			{% for airing in recording.airings | sort(attribute='airDateTime') %}
+				{% if loop.index > 1 %}
+					{% break %}
+				{% endif %}
+				{% do upcoming.append(airing) %}
+			{% endfor %}
+		{% endfor %}
+
+
+			{% for airing in upcoming | sort(attribute='airDateTime') %}
+				<div class="box program type_{{ airing.program.entityType }} {% if airing.new %}first_run{% endif %}" >
+					<div class="time">{{airing.airDateTime|int_to_datetime}}</div>
+					<div class="station_name">{{airing.station.name}}</div>
+					<div class="program_title">{{airing.program.title}}</div>
+					{% if airing.program.episodeTitle %}
+						<div class="episode">
+							{{airing.program.season_episode or ''}}
+						<span class="episode_title">{{airing.program.episodeTitle}}</span></div>
+					{% endif %}
+					<div class="description">{{airing.program.description or ''}}</div>
+					<div class="duration">{{airing.duration|seconds_to_timecode}}</div>
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+
+
+
+
+
+
+
+	{% for recording in recordings %}
+	<div class="box">
+		<div class="box{% if recording.series %} series{% else %} single{% endif %}">
+			<a href="{{ url_for('record', programID=recording.programID, _method='GET') }}">{{ recording.title }} 
+			{% if not recording.series and 'EP' in recording.programID and recording.airings[0] %}
+			- {{ recording.airings[0].program.season_episode }} {{ recording.airings[0].program.episodeTitle}}
+			{% endif %}
+			 - {{ recording.prefer_station.name }}</a> <a href="{{ url_for('delete_recording', programID=recording.programID, _method='GET') }}">DELETE</a>
+		</div>
+		<div class="schedule">
+			{% for airing in recording.airings | sort(attribute='airDateTime') %}
+				<div class="box program type_{{ airing.program.entityType }} {% if airing.new %}first_run{% endif %}" >
+					<div class="time">{{airing.airDateTime|int_to_datetime}}</div>
+					<div class="station_name">{{airing.station.name}}</div>
+					<div class="program_title">{{airing.program.title}}</div>
+					{% if airing.program.episodeTitle %}
+						<div class="episode">
+							{{airing.program.season_episode or ''}}
+						<span class="episode_title">{{airing.program.episodeTitle}}</span></div>
+					{% endif %}
+					<div class="description">{{airing.program.description or ''}}</div>
+					<div class="duration">{{airing.duration|seconds_to_timecode}}</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	{% endfor %}
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+
+{% block body %}
+
+<div class="box">
+	<form action="{{url_for('record', programID=recording.programID)}}" method="post">
+		<dl>
+		{{ render_field(form.title) }}
+		{{ render_field(form.priority) }}
+		{% if recording.series %}
+		{{ form.series(hidden=True) }}
+		{{ render_field(form.series, disabled=True) }}
+		{{ render_field(form.new_only) }}
+		{% elif 'EP' in recording.programID %}
+		{{ render_field(form.series) }}
+		{{ render_field(form.new_only) }}
+		{% else %}
+		{{ render_field(form.series, disabled=True) }}
+		{{ render_field(form.new_only, disabled=True) }}
+		{% endif %}
+
+		{{ render_field(form.start_padding) }}
+		{{ render_field(form.stop_padding) }}
+		{{ render_field(form.prefer_station) }}
+		{{ render_field(form.any_station) }}
+		{{ form.save }}
+		</dl>
+	</form>
+</div>
+
+{% endblock %}

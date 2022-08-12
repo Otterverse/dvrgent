@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<title>{{ title }} - DVRgent</title>
+		<link rel="stylesheet" href={{url_for('static', filename='style.css')}}>
+		<script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+		{% block head %}{% endblock %}
+	</head>
+	<body>
+	<div class="menu box">
+		<div class="box menu_item"><a href={{ url_for('lineup', _method="GET" )}}>Lineup</a></div>
+		<div class="box menu_item"><a href={{ url_for('list_recordings', _method="GET" )}}>Recordings</a></div>
+	</div>
+		{% block body %}{% endblock %}
+	</body>
+</html>

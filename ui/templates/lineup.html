@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block head %}
+<script>
+
+//Debounce function from https://github.com/cowboy/jquery-throttle-debounce
+(function(b,c){var $=b.jQuery||b.Cowboy||(b.Cowboy={}),a;$.throttle=a=function(e,f,j,i){var h,d=0;if(typeof f!=="boolean"){i=j;j=f;f=c}function g(){var o=this,m=+new Date()-d,n=arguments;function l(){d=+new Date();j.apply(o,n)}function k(){h=c}if(i&&!h){l()}h&&clearTimeout(h);if(i===c&&m>e){l()}else{if(f!==true){h=setTimeout(i?k:l,i===c?e-m:e)}}}if($.guid){g.guid=j.guid=j.guid||$.guid++}return g};$.debounce=function(d,e,f){return f===c?a(d,e,false):a(d,f,e!==false)}})(this);
+
+
+
+$(function() {
+	var $programs = $('.program');
+	var $stations = $('.station');
+	$('#search').keyup($.debounce(250, function() {
+		var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+		$programs.show().filter(function() {
+			var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+			return !~text.indexOf(val);
+		}).hide();
+
+		$stations.show().filter(function() {
+			if($(this).find('.program:visible').length == 0){
+				return true;
+			}
+		}).hide();
+	}));
+
+	$('#search').keyup();
+});
+
+
+
+
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="lineup">
+	<div class="dates">
+		{% for n in dates %}
+		<div class="box date{%if date == n %} selected{% endif %}"><a href={{ url_for('lineup', date=n, _method="GET" )}}>{{ n }}</a></div>
+		{% endfor %}
+	</div>
+	<div class="box search">
+		<form action="{{url_for('lineup')}}" method="post">
+			<input type="text" id="search" name="query" placeholder="Type to search" size=32>
+			<input type="submit" value="Full Search">
+		</form>
+	</div>
+	{% for station in airings | sort(attribute='station.channel') | groupby('station.channel')  %}
+		<div class="box station">
+			<div class="box station_info">{{ station.channel }}
+				{{ station.list[0].station.channel }} - {{ station.list[0].station.name }} {% if station.list[0].station.affiliate %} ({{station.list[0].station.affiliate}}) {% endif %}
+			</div>
+			<div class="schedule">
+			{% for airing in station.list | sort(attribute='airDateTime') %}
+				<div class="box program type_{{ airing.program.entityType }} {% if airing.new %}first_run{% endif %}" >
+					<div class="time">{{airing.airDateTime|int_to_datetime}}</div>
+					<div class="program_title">{{airing.program.title}}</div>
+					{% if airing.program.episodeTitle %}
+						<div class="episode">
+							{{airing.program.season_episode or ''}}
+						<span class="episode_title">{{airing.program.episodeTitle}}</span></div>
+					{% endif %}
+					<div class="description">{{airing.program.description or ''}}</div>
+					<div class="duration">{{airing.duration|seconds_to_timecode}}</div>
+					<div ><a class="rec_button" href="{{url_for('record', _method="GET", programID=airing.programID, stationID=airing.stationID, airDateTime=airing.airDateTime )}}">(REC)</a></div>
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+	{% endfor %}
+</div>
+
+
+{% endblock %}

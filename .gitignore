@@ -1,0 +1,8 @@
+build/
+dvrgent.egg-info/
+notes.txt
+__pycache__
+*.pyc
+dvrgent.db*
+*.mpg
+*.mpegts
